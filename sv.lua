@@ -136,7 +136,7 @@ RegisterCommand('showLeaderboard', function(source)
     local identifier = getLicense(source)
     if identifier then
         local p = promise.new()
-        exports.oxmysql:execute('SELECT kills FROM ev_leaderboard', function(result)
+        exports.oxmysql:execute('SELECT * FROM ev_leaderboard', function(result)
             if result then
                 local data = {}
                 for i = 1, #result do
