@@ -112,7 +112,7 @@ AddEventHandler('playerDropped', function()
 	if player then
         exports.oxmysql:single('SELECT license FROM ev_leaderboard WHERE license = ?', {license}, function(result)
             if result then
-                exports.oxmysql:insert('UPDATE ev_leaderboard SET kills, deaths = ?, ? WHERE license = ? ', {player.kills, player.deaths, license}, function(id)
+                exports.oxmysql:insert('UPDATE ev_leaderboard SET kills = ?, kills = ? WHERE license = ? ', {player.kills, player.deaths, license}, function(id)
                     if id then
                         print('Update table for ' .. license)
                     end
