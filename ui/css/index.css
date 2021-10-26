@@ -1,0 +1,154 @@
+@font-face {
+    font-family: --f;
+    src: url(/ui/fonts/gotham.otf);
+    font-display: swap;
+}
+
+.container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0%;
+    left: 0%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.personal-stats {
+    background: linear-gradient(360deg, rgba(28,41,56,1) 0%, rgba(48,77,110,1) 100%);
+    position: relative;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    flex-wrap: nowrap;
+    width: 40vh;
+    height: 30vh;
+    font-size: 3vh;
+    color: #3ba3e4;
+    font-family: --f;
+    text-shadow: 0 0.3vh 0 black;
+    text-align: center;
+    border-radius: 0.8vw;
+    box-shadow: 0 0 0.8vh rgba(0, 0, 0, 0.322);
+}
+
+.top3 {
+    background: linear-gradient(360deg, rgba(28,41,56,1) 0%, rgba(48,77,110,1) 100%);
+    position: relative;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+    width: 46vh;
+
+    font-size: 1.5vw;
+    color: #3ba3e4;
+    font-family: --f;
+    text-shadow: 0 0.3vh 0 black;
+    text-align: center;
+    border-radius: 0.8vw;
+    box-shadow: 0 0 0.8vh rgba(0, 0, 0, 0.322);
+    overflow: hidden;
+}
+
+.img-containers {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    color: white;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.img-box {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    margin: 2.5%;
+    color: white;
+}
+
+.top-img {
+    width: 12vh;
+    border-radius: 50%;
+    border: 0.5vh solid white;
+    box-shadow: 0 0 .8vh white;
+    transition: 0.2s ease-in-out;
+}
+
+.top-img2 {
+    width: 12vh;
+    border-radius: 50%;
+    border: 0.5vh solid white;
+    box-shadow: 0 0 .8vh white;
+    transition: 0.2s ease-in-out;
+}
+
+.personal-img {
+    position: absolute;
+    top: -6vh;
+}
+
+.personal-info {
+    padding-top: 7.3vh;
+}
+
+.personal-info i {
+    margin-right: 0.3vw;
+}
+
+.nombre-personal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    color: white;
+    text-align: left;
+    margin-top: 0.5vw;
+}
+
+.lead-text {
+    margin: 2.5% 5% 5% 5%;
+    color: white;
+    border-bottom: 2px solid white;
+    padding: 0.5vw;
+    color: white;
+}
+
+#discord-1 {
+    border: 0.5vh solid gold;
+    box-shadow: 0 0 .8vh gold;
+}
+
+#discord-2 {
+    border-color: #d0d0d0;
+}
+
+#discord-3 {
+    border: 0.5vh solid #cd7f32;
+    box-shadow: 0 0 .8vh #cd7f32;
+}
+
+#elmataperras {
+    border-bottom: 0.5vh solid white;
+    margin-bottom: 1.5vh;
+}
+
+#personal-kills {
+    margin-left: 0.5vh;
+
+}
+
+#personal-deaths {
+    margin-left: 0.5vh;
+}
+
+#personal-kd {
+    margin-left: 0.5vh;
+
+}

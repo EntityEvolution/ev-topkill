@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top Kill UI</title>
+    <link href="https://cdn.jsdelivr.net/gh/hung1001/font-awesome-pro@4cac1a6/css/all.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="/ui/css/index.css">
+</head>
+<body>
+    <div class="container">
+        <div id="leaderboard" class="top3">
+            <h1>Top Kills</h1>
+            <div class="img-containers">
+                <div class="img-box">
+                    <img class="top-img" id="discord-2" src="./default.png">
+                    <span id="kills-2" class="text-containers">0</span>
+                </div>
+                <div class="img-box">
+                    <img class="top-img" id="discord-1" src="./default.png">
+                    <span id="kills-1" class="text-containers">0</span>
+                </div>
+                <div class="img-box">
+                    <img class="top-img" id="discord-3" src="./default.png">
+                    <span id="kills-3" class="text-containers">0</span>
+                </div>
+            </div>
+            <span style="margin-bottom: 2.5%; margin-top: 2.5%;font-size: 3.8vh;">Leaderboard</span>
+            <span id="name-1" class="text-containers lead-text">Empty Spot</span>
+            <span id="name-2" class="text-containers lead-text">Empty Spot</span>
+            <span id="name-3" class="text-containers lead-text" style="margin-bottom: 10.5%">Empty Spot</span>
+        </div>
+
+        <div id="score" class="personal-stats">
+            <div class="personal-img">
+                <img class="top-img2" id="personal-avatar" src="./default.png">
+            </div>
+            <div class="personal-info">
+                <span class="nombre-personal" id="personal-name">elfishii</span>
+                <span class="nombre-personal"><i class="fas fa-swords"></i> Kills: <span id="personal-kills">0</span></span>
+                <span class="nombre-personal"><i class="fas fa-skull"></i> Deaths: <span id="personal-deaths">0</span></span>
+                <span class="nombre-personal"><i class="fas fa-skull-cow"></i> KD: <span id="personal-kd">0</span></span>
+            </div>
+
+        </div>
+    </div>
+    <script type="text/javascript" src="/ui/js/script.js"></script>
+</body>
+</html>
