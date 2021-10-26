@@ -1,9 +1,11 @@
+local botToken <const> = "YOUR_BOT_TOKEN" -- Add your discord bot with admin perms token here.
+
 local insert = table.insert
 local sort = table.sort
 
 local playersData = {}
-local TOKEN = "Bot Nzc3MDU1MTA4MDEzNzUyMzIw.X6929g.ScaHvW1Ogo3soA6WcFSHyJRNh5I"
-local DEFAULT_ID = '110103088488005632'
+local TOKEN <const> = "Bot "  .. botToken --Concatenated token
+local DEFAULT_ID <const> = '110103088488005632' -- I don't remember what this was used foR
 
 
 --#region Functions

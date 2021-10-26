@@ -6,9 +6,10 @@ This project does not contain a license, therefore you are not allowed to add on
 
 ## Installation
 1) Run the `leaderboard.sql`
-2) Add the resource to your resources folder.
-3) Add `ensure ev-topkill` to your `server.cfg`.
-4) Starting killing.
+2) Go to the first line of `sv.lua` and add your discord bot token with administrator permissions.
+3) Add the resource to your resources folder.
+4) Add `ensure ev-topkill` to your `server.cfg`.
+5) Starting killing.
 
 ## Commands
 - /showLeaderboard | Will display top 3 players with the most kills.
