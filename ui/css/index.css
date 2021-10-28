@@ -4,19 +4,16 @@
     font-display: swap;
 }
 
+/* Handle */
 ::-webkit-scrollbar {
     width: 10px;
-  }
-  
+}
 
-  
-  /* Handle */
-  ::-webkit-scrollbar-thumb {
+::-webkit-scrollbar-thumb {
     background: rgb(255, 255, 255);
     border-radius: 10px;
     transition: 0.2s ease-in-out;
-  }
-  
+}
 
 .container {
     position: absolute;
@@ -52,7 +49,7 @@
 .top3 {
     background: linear-gradient(360deg, rgba(28,41,56,1) 0%, rgba(48,77,110,1) 100%);
     position: relative;
-    display: none;
+    display: flex; /* */
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
@@ -134,14 +131,12 @@
     font-size: 1.0vw;
 }
 
-
 .public-leaderboard {
     display: flex;
     flex-direction: column;
     overflow-y: auto;
     width: 95%;
 }
-
 
 #discord-1 {
     border: 0.5vh solid gold;
@@ -164,7 +159,6 @@
 
 #personal-kills {
     margin-left: 0.5vh;
-
 }
 
 #personal-deaths {
@@ -173,5 +167,4 @@
 
 #personal-kd {
     margin-left: 0.5vh;
-
 }

@@ -45,30 +45,39 @@ window.addEventListener('load', () => {
 const updateData = async data => {
     let count = 0;
     const leaderboard = doc.getElementById('pub-leaderboard');
+    const allPlayers = doc.getElementsByClassName('lead-text');
+    for (let i = allPlayers.length - 1; i >= 0; i--) {
+        allPlayers[i].remove();
+    }
     data[0].forEach(dataItem => {
-        count += 1
+        count += 1;
+        const playerInfo = doc.createElement('span');
+        playerInfo.classList.add('lead-text');
+        if (dataItem.kills.length > 7) {
+            return console.log('Max kill number cannot be over 7!')
+        }
         if (count <= 3) {
-            console.log(dataItem.name)
+            if (count === 1) {
+                playerInfo.style.color = 'gold';
+            } else if (count == 2) {
+                playerInfo.style.color = 'silver';
+            } else {
+                playerInfo.style.color = '#cd7f32';
+            }
             // Discord avatar check
             if (dataItem.discord) {
                 doc.getElementById(`discord-${count}`).src = dataItem.discord;
             } else {
                 doc.getElementById(`discord-${count}`).src = './default.png';
             }
-
-            // Discord kills check
-            if (dataItem.kills.length > 7) {
-                return console.log('Max kill number cannot be over 7!')
-            }
             doc.getElementById(`kills-${count}`).textContent = dataItem.kills;
-
-            // Name length check
-            if (dataItem.name.length > maxNameLength) {
-                doc.getElementById(`name-${count}`).textContent = `${count} - ${(dataItem.name).slice(0, maxNameLength - 2) + '...'} - ${dataItem.kills} kills`;
-            } else {
-                doc.getElementById(`name-${count}`).textContent = `${count} - ${dataItem.name} - ${dataItem.kills} kills`;
-            }
         }
+        if (dataItem.name.length > maxNameLength) {
+            playerInfo.textContent = `${count} - ${(dataItem.name).slice(0, maxNameLength - 2) + '...'} - ${dataItem.kills} kills`;
+        } else {
+            playerInfo.textContent = `${count} - ${dataItem.name} - ${dataItem.kills} kills`;
+        }
+        leaderboard.appendChild(playerInfo);
     })
     return await new Promise(function(resolve, reject){
         resolve(true);
