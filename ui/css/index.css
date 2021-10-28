@@ -18,7 +18,7 @@
 .top3 {
     background: linear-gradient(360deg, rgba(28,41,56,1) 0%, rgba(48,77,110,1) 100%);
     position: relative;
-    display: flex; /* */
+    display: none;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
@@ -64,10 +64,12 @@
 }
 
 .public-leaderboard {
+    position: relative;
     display: flex;
     flex-direction: column;
     overflow-y: auto;
     width: 95%;
+    margin-bottom: 5%;
 }
 
 .public-leaderboard::-webkit-scrollbar {
