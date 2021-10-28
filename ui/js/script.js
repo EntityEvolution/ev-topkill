@@ -13,7 +13,7 @@ window.addEventListener('load', () => {
             if (e.data.players) {
                 updateData(e.data.players).then((response) => {
                     if (response) {
-                        doc.getElementById('leaderboard').style.display = 'flex';
+                        leaderboard.style.display = 'flex';
                     }
                     return;
                 });
@@ -65,45 +65,34 @@ const updateData = async data => {
                 playerInfo.style.color = '#cd7f32';
             }
             // Discord avatar check
-            if (dataItem.discord) {
-                doc.getElementById(`discord-${count}`).src = dataItem.discord;
-            } else {
-                doc.getElementById(`discord-${count}`).src = './default.png';
-            }
+            (dataItem.discord) ? doc.getElementById(`discord-${count}`).src = dataItem.discord : doc.getElementById(`discord-${count}`).src = './default.png';
+
+            // Set kills
             doc.getElementById(`kills-${count}`).textContent = dataItem.kills;
         }
-        if (dataItem.name.length > maxNameLength) {
-            playerInfo.textContent = `${count} - ${(dataItem.name).slice(0, maxNameLength - 2) + '...'} - ${dataItem.kills} kills`;
-        } else {
-            playerInfo.textContent = `${count} - ${dataItem.name} - ${dataItem.kills} kills`;
-        }
+        (dataItem.name.length > maxNameLength) ? playerInfo.textContent = `${count} - ${(dataItem.name).slice(0, maxNameLength - 2) + '...'} - ${dataItem.kills} kills` : playerInfo.textContent = `${count} - ${dataItem.name} - ${dataItem.kills} kills` ;
         leaderboard.appendChild(playerInfo);
     })
     return await new Promise(function(resolve, reject){
         resolve(true);
     })
-    //leaderboard.append()
 }
 
 const updateScore = async data => {
-    if (data.avatar) {
-        doc.getElementById('personal-avatar').src = data.avatar;
-    } else {
-        doc.getElementById('personal-avatar').src = './default.png';
-    }
-
-    if (data.discord.length > maxNameLength) {
-        doc.getElementById('personal-name').textContent = data.discord.slice(0, maxNameLength)
-    } else {
-        doc.getElementById('personal-name').textContent = data.discord;
-    }
+    const avatar = doc.getElementById('personal-avatar');
+    const name = doc.getElementById('personal-name');
+    const kills = doc.getElementById('personal-kills');
+    const deaths = doc.getElementById('personal-deaths');
+    const kd = doc.getElementById('personal-kd');
+    (data.avatar) ? avatar.src = data.avatar : avatar.src = './default.png';
+    (data.discord.length > maxNameLength) ? name.textContent = data.discord.slice(0, maxNameLength) : name.textContent = data.discord;
 
     if (data.kills.length > 7 || data.deaths.length > 7 || data.kd.length > 7) {
-        return console.log('Max kill number cannot be over 7!')
+        return console.log('Max data number cannot be over 7!')
     }
-    doc.getElementById('personal-kills').textContent = data.kills;
-    doc.getElementById('personal-deaths').textContent = data.deaths;
-    doc.getElementById('personal-kd').textContent = data.kd;
+    kills.textContent = data.kills;
+    deaths.textContent = data.deaths;
+    kd.textContent = data.kd;
     return await new Promise(function(resolve, reject){
         resolve(true);
     })
