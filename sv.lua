@@ -1,4 +1,3 @@
----@diagnostic disable: undefined-global
 local botToken <const> = "YOUR_BOT_TOKEN" -- Add your discord bot with admin perms token here.
 
 local insert = table.insert
@@ -88,43 +87,12 @@ local function getDiscordName(discordId)
 end
 
 --#endregion
-AddEventHandler('onResourceStart', function(name)
-    if GetResourceCurrentName() == name then
-        local p = promise.new()
-        exports.oxmysql:execute('SELECT * FROM ev_leaderboard', function(result)
-            if result then
-                local data = {}
-                for i = 1, #result do
-                    insert(data, result[i].identifier, {discord = result[i].discord, kills = tonumber(result[i].kills), deaths = tonumber(result[i].kills), name = getDiscordName(result[i].discord)})
-                end
-                return p:resolve({data})
-            end
-        end)
-        local result = Citizen.Await(p)
-        playersData = result
-    end
-end)
 
 AddEventHandler('playerDropped', function()
 	local playerId <const> = source
-    local license = getLicense(playerId)
-	local player = playersData[license]
+	local player = playersData[tonumber(playerId)]
 	if player then
-        exports.oxmysql:single('SELECT license FROM ev_leaderboard WHERE license = ?', {license}, function(result)
-            if result then
-                exports.oxmysql:insert('UPDATE ev_leaderboard SET kills = ?, kills = ? WHERE license = ? ', {player.kills, player.deaths, license}, function(id)
-                    if id then
-                        print('Update table for ' .. license)
-                    end
-                end)
-            else
-                exports.oxmysql:insert('INSERT INTO ev_leaderboard (license, discord, kills, deaths) VALUES (?, ?, ?, ?) ', {license, getDiscordId(playerId), player.kills, players.deaths}, function(id)
-                    if id then
-                        print('Created new table for ' .. license)
-                    end
-                end)
-            end
-        end)
+		player = nil
 	end
 end)
 
@@ -136,14 +104,22 @@ RegisterNetEvent('ev:updateKillerData', function(data)
             if type(data[1]) ~= "string" and type(data[2]) ~= "string" then
                 return print('sus')
             end
-            local playerLicense = getLicense(tonumber(data[1]))
-            local targetLicense = getLicense(tonumber(data[2]))
+            local playerId = tonumber(data[1])
+            local targetId = tonumber(data[2])
             if playerId ~= targetId then
-                local playerData = playersData[playerLicense]
-                local targetData = playersData[targetLicense]
+                local playerData = playersData[playerId]
+                local targetData = playersData[targetId]
                 if playerData and targetData then
-                    playerData.kills = playersData.kills + 1
-                    targetData.deaths = playerData.deaths + 1
+                    if playerData.license and targetData.license then
+                        local queries = {
+                            { query = 'UPDATE `ev_leaderboard` SET kills = ?, deaths = ? WHERE license = ?', values = {playerData.kills + 1, playerData.deaths, playerData.license} },
+                            { query = 'UPDATE `ev_leaderboard` SET kills = ?, deaths = ? WHERE license = ?', values = {targetData.kills, targetData.deaths + 1, targetData.license} }
+                        }
+                        exports.oxmysql:transaction(queries, function(result)
+                            playerData.kills = playerData.kills + 1
+                            targetData.deaths = targetData.deaths + 1
+                        end)
+                    end
                 end
             end
         end
@@ -153,11 +129,23 @@ end)
 RegisterNetEvent('ev:playerSet', function()
     local playerId <const> = source
     local license = getLicense(playerId)
+    local discord = getDiscordId(playerId) or DEFAULT_ID
     if license then
-        local playerData = playersData[license]
-        if not playerData then
-            local discordId = getDiscordId(playerId)
-            playersData[license] = {discord = discordId, kills = 0, deaths = 0, name = getDiscordName(discordId)}
+        if discord then
+            local p = promise.new()
+            exports.oxmysql:single('SELECT * FROM ev_leaderboard WHERE license = ?', {license}, function(result)
+                if result then
+                    p:resolve({license = result.license, discord = result.discord, kills = tonumber(result.kills), deaths = tonumber(result.deaths)})
+                else
+                    exports.oxmysql:insert('INSERT INTO ev_leaderboard (license, discord, kills, deaths) VALUES (?, ?, ?, ?) ', {license, discord, '0', '0'}, function(id)
+                        if id then
+                            p:resolve({license = license, discord = getDiscordName(discord), kills = 0, deaths = 0})
+                        end
+                    end)
+                end
+            end)
+            local result = Citizen.Await(p)
+            playersData[playerId] = result
         end
     end
 end)
@@ -165,12 +153,9 @@ end)
 --#region Commands
 RegisterCommand('score', function(source)
     local playerId <const> = source
-    local license = getLicense(playerId)
-    if license then
-        local playerData = playersData[license]
-        if playerData then
-            TriggerClientEvent('ev:showLeaderboard', playerId, false, {avatar = getPlayerFromDiscord(playerData.discord), discord = getDiscordName(playerData.discord), kills = playerData.kills, deaths = playerData.deaths, kd = math.floor(playerData.kills / playerData.deaths)})
-        end
+    local playerData = playersData[playerId]
+    if playerData then
+        TriggerClientEvent('ev:showLeaderboard', playerId, false, {avatar = getPlayerFromDiscord(playerData.discord), discord = getDiscordName(playerData.discord), kills = playerData.kills, deaths = playerData.deaths, kd = math.floor(playerData.kills / playerData.deaths)})
     end
 end)
 
@@ -178,15 +163,24 @@ RegisterCommand('showLeaderboard', function(source)
     local playerId <const> = source
     local identifier = getLicense(playerId)
     if identifier then
-        local data = playersData
-        -- If this doesn't work the I'll have to organize data differently
-        sort(data, function (a, b)
-            return a.kills > b.kills
+        local p = promise.new()
+        exports.oxmysql:execute('SELECT discord, kills FROM ev_leaderboard', function(result)
+            if result then
+                local data = {}
+                for i = 1, #result do
+                    insert(data, {discord = getPlayerFromDiscord(result[i].discord), kills = tonumber(result[i].kills), name = getDiscordName(result[i].discord)})
+                end
+                sort(data, function (a, b)
+                    return a.kills > b.kills
+                end)
+                p:resolve({data[1] or nil, data[2] or nil, data[3] or nil})
+            end
         end)
+        local result = Citizen.Await(p)
         if type(result) ~="table" then
             return false, print('Cannot return table data sus')
         end
-        TriggerClientEvent('ev:showLeaderboard', playerId, true, data)
+        TriggerClientEvent('ev:showLeaderboard', playerId, true, result)
     end
 end)
 --#endregion
