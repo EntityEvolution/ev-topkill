@@ -178,7 +178,7 @@ RegisterCommand('showLeaderboard', function(source)
                 sort(data, function (a, b)
                     return a.kills > b.kills
                 end)
-                p:resolve({data or nil})
+                p:resolve(data or nil)
             end
         end)
         local result = Citizen.Await(p)

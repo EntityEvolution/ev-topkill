@@ -49,7 +49,7 @@ const updateData = async data => {
     for (let i = allPlayers.length - 1; i >= 0; i--) {
         allPlayers[i].remove();
     }
-    data[0].forEach(dataItem => {
+    data.forEach(dataItem => {
         count += 1;
         const playerInfo = doc.createElement('span');
         playerInfo.classList.add('lead-text');
