@@ -4,17 +4,6 @@
     font-display: swap;
 }
 
-/* Handle */
-::-webkit-scrollbar {
-    width: 0.5vh;
-}
-
-::-webkit-scrollbar-thumb {
-    background: rgb(255, 255, 255);
-    border-radius: 1.0vh;
-    transition: 0.2s ease-in-out;
-}
-
 .container {
     position: absolute;
     width: 100%;
@@ -24,26 +13,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-}
-
-.personal-stats {
-    background: linear-gradient(360deg, rgba(28,41,56,1) 0%, rgba(48,77,110,1) 100%);
-    position: absolute;
-    right: 0.5%;
-    bottom: 2%;
-    display: none;
-    flex-direction: column;
-    align-items: center;
-    flex-wrap: nowrap;
-    width: 30vh;
-    height: 20vh;
-    font-size: 1.5vh;
-    color: #3ba3e4;
-    font-family: --f;
-    text-shadow: 0 0.3vh 0 black;
-    text-align: center;
-    border-radius: 0.8vw;
-    box-shadow: 0 0 0.8vh rgba(0, 0, 0, 0.322);
 }
 
 .top3 {
@@ -94,17 +63,60 @@
     transition: 0.2s ease-in-out;
 }
 
+.public-leaderboard {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    width: 95%;
+}
+
+.public-leaderboard::-webkit-scrollbar {
+    width: 0.5vh;
+}
+
+.public-leaderboard::-webkit-scrollbar-thumb {
+    background: rgb(255, 255, 255);
+    border-radius: 1.0vh;
+    transition: 0.2s ease-in-out;
+}
+
+.lead-text {
+    color: white;
+    margin: 0.2vw;
+    font-size: 1.0vw;
+}
+
+.personal-stats {
+    background: linear-gradient(360deg, rgba(28,41,56,1) 0%, rgba(48,77,110,1) 100%);
+    position: absolute;
+    right: 0.5%;
+    bottom: 2%;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    flex-wrap: nowrap;
+    width: 30vh;
+    height: 20vh;
+    font-size: 1.5vh;
+    color: #3ba3e4;
+    font-family: --f;
+    text-shadow: 0 0.3vh 0 black;
+    text-align: center;
+    border-radius: 0.8vw;
+    box-shadow: 0 0 0.8vh rgba(0, 0, 0, 0.322);
+}
+
+.personal-img {
+    position: absolute;
+    top: -6vh;
+}
+
 .top-img2 {
     width: 12vh;
     border-radius: 50%;
     border: 0.5vh solid white;
     box-shadow: 0 0 .8vh white;
     transition: 0.2s ease-in-out;
-}
-
-.personal-img {
-    position: absolute;
-    top: -6vh;
 }
 
 .personal-info {
@@ -115,7 +127,7 @@
     margin-right: 0.3vw;
 }
 
-.nombre-personal {
+.personal-name {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -123,19 +135,6 @@
     color: white;
     text-align: left;
     margin-top: 0.5vw;
-}
-
-.lead-text {
-    color: white;
-    margin: 0.2vw;
-    font-size: 1.0vw;
-}
-
-.public-leaderboard {
-    display: flex;
-    flex-direction: column;
-    overflow-y: auto;
-    width: 95%;
 }
 
 #discord-1 {
@@ -150,11 +149,6 @@
 #discord-3 {
     border: 0.5vh solid #cd7f32;
     box-shadow: 0 0 .8vh #cd7f32;
-}
-
-#elmataperras {
-    border-bottom: 0.5vh solid white;
-    margin-bottom: 1.5vh;
 }
 
 #personal-kills {
