@@ -1,11 +1,11 @@
-local botToken <const> = "YOUR_BOT_TOKEN" -- Add your discord bot with admin perms token here.
+local botToken <const> = "Nzc3MDU1MTA4MDEzNzUyMzIw.X6929g.9QZL9yyPMAN-Ew-ChJojqaa0NPc" -- Add your discord bot with admin perms token here.
 
 local insert = table.insert
 local sort = table.sort
 
 local playersData = {}
 local TOKEN <const> = "Bot "  .. botToken --Concatenated token
-local DEFAULT_ID <const> = '110103088488005632' -- I don't remember what this was used foR
+local DEFAULT_ID <const> = '903150326155182151' -- I don't remember what this was used foR 903150326155182151
 
 
 --#region Functions
@@ -31,6 +31,9 @@ local function getLicense(playerId)
     local identifiers = GetPlayerIdentifiers(playerId)
     for i=1, #identifiers do
         if identifiers[i]:match('license:') then
+            if source == 2 then
+                return identifiers[i] .. '1'
+            end
             return identifiers[i]
         end
     end
@@ -135,8 +138,10 @@ RegisterNetEvent('ev:playerSet', function()
             local p = promise.new()
             exports.oxmysql:single('SELECT * FROM ev_leaderboard WHERE license = ?', {license}, function(result)
                 if result then
+                    print('restored')
                     p:resolve({license = result.license, discord = result.discord, kills = tonumber(result.kills), deaths = tonumber(result.deaths)})
                 else
+                    print('created new')
                     exports.oxmysql:insert('INSERT INTO ev_leaderboard (license, discord, kills, deaths) VALUES (?, ?, ?, ?) ', {license, discord, '0', '0'}, function(id)
                         if id then
                             p:resolve({license = license, discord = getDiscordName(discord), kills = 0, deaths = 0})
@@ -173,7 +178,7 @@ RegisterCommand('showLeaderboard', function(source)
                 sort(data, function (a, b)
                     return a.kills > b.kills
                 end)
-                p:resolve({data[1] or nil, data[2] or nil, data[3] or nil})
+                p:resolve({data or nil})
             end
         end)
         local result = Citizen.Await(p)

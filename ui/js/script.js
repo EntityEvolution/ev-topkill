@@ -10,23 +10,23 @@ window.addEventListener('load', () => {
             if (window.getComputedStyle(scoreboard, null).display == 'flex') {
                 return console.log('You need to close the other one first')
             };
-            if (e.data.first) {
-                updateData(e.data.first, '1');
+            if (e.data.players) {
+                updateData(e.data.players).then((response) => {
+                    if (response) {
+                        doc.getElementById('leaderboard').style.display = 'flex';
+                    }
+                    return;
+                });
             }
-            if (e.data.second) {
-                updateData(e.data.second, '2');
-            }
-
-            if (e.data.third) {
-                updateData(e.data.third, '3');
-            }
-            doc.getElementById('leaderboard').style.display = 'flex';
         } else if (e.data.action == 'showScore') {
             if (window.getComputedStyle(leaderboard, null).display == 'flex') {
                 return console.log('You need to close the other one first')
             };
-            scoreboard.style.display = 'flex';
-            updateScore(e.data.player);
+            updateScore(e.data.player).then((response) => {
+                if (response) {
+                    scoreboard.style.display = 'flex';
+                }
+            });
         } 
     })
 
@@ -42,29 +42,41 @@ window.addEventListener('load', () => {
     })
 })
 
-const updateData = (data, position) => {
-    // Discord avatar check
-    if (data.discord) {
-        doc.getElementById(`discord-${position}`).src = data.discord;
-    } else {
-        doc.getElementById(`discord-${position}`).src = './default.png';
-    }
+const updateData = async data => {
+    let count = 0;
+    const leaderboard = doc.getElementById('pub-leaderboard');
+    data[0].forEach(dataItem => {
+        count += 1
+        if (count <= 3) {
+            console.log(dataItem.name)
+            // Discord avatar check
+            if (dataItem.discord) {
+                doc.getElementById(`discord-${count}`).src = dataItem.discord;
+            } else {
+                doc.getElementById(`discord-${count}`).src = './default.png';
+            }
 
-    // Discord kills check
-    if (data.kills.length > 7) {
-        return console.log('Max kill number cannot be over 7!')
-    }
-    doc.getElementById(`kills-${position}`).textContent = data.kills;
+            // Discord kills check
+            if (dataItem.kills.length > 7) {
+                return console.log('Max kill number cannot be over 7!')
+            }
+            doc.getElementById(`kills-${count}`).textContent = dataItem.kills;
 
-    // Name length check
-    if (data.name.length > maxNameLength) {
-        doc.getElementById(`name-${position}`).textContent = `${position} - ${(data.name).slice(0, maxNameLength - 2) + '...'} - ${data.kills} kills`;
-    } else {
-        doc.getElementById(`name-${position}`).textContent = `${position} - ${data.name} - ${data.kills} kills`;
-    }
+            // Name length check
+            if (dataItem.name.length > maxNameLength) {
+                doc.getElementById(`name-${count}`).textContent = `${count} - ${(dataItem.name).slice(0, maxNameLength - 2) + '...'} - ${dataItem.kills} kills`;
+            } else {
+                doc.getElementById(`name-${count}`).textContent = `${count} - ${dataItem.name} - ${dataItem.kills} kills`;
+            }
+        }
+    })
+    return await new Promise(function(resolve, reject){
+        resolve(true);
+    })
+    //leaderboard.append()
 }
 
-const updateScore = data => {
+const updateScore = async data => {
     if (data.avatar) {
         doc.getElementById('personal-avatar').src = data.avatar;
     } else {
@@ -83,6 +95,9 @@ const updateScore = data => {
     doc.getElementById('personal-kills').textContent = data.kills;
     doc.getElementById('personal-deaths').textContent = data.deaths;
     doc.getElementById('personal-kd').textContent = data.kd;
+    return await new Promise(function(resolve, reject){
+        resolve(true);
+    })
 }
 
 const fetchNUI = async (cbname, data) => {
