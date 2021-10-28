@@ -161,7 +161,7 @@ RegisterCommand('score', function(source)
     local playerId <const> = source
     local playerData = playersData[playerId]
     if playerData then
-        TriggerClientEvent('ev:showLeaderboard', playerId, false, {avatar = getPlayerFromDiscord(playerData.discord), discord = getDiscordName(playerData.discord), kills = playerData.kills, deaths = playerData.deaths, kd = math.floor(playerData.kills / playerData.deaths)})
+        TriggerClientEvent('ev:showLeaderboard', playerId, false, {avatar = getPlayerFromDiscord(playerData.discord), discord = getDiscordName(playerData.discord), kills = playerData.kills, deaths = playerData.deaths, kd = math.floor(playerData.kills / playerData.deaths), headshots = playerData.headshots})
     end
 end)
 
