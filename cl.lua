@@ -1,12 +1,9 @@
-local firstSpawn, isOpen = true, false
+local isOpen = false
 
 CreateThread(function()
-	while firstSpawn do
+	while true do
 		if NetworkIsPlayerActive(PlayerId()) then
-            if firstSpawn then
 			    TriggerServerEvent('ev:playerSet')
-                firstSpawn = false
-            end
 			break
 		end
         Wait(0)
