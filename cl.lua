@@ -32,7 +32,11 @@ local function GameEventTriggered(eventName, data)
             if attacker ~= victim then
                 if IsPedAPlayer(attacker) and IsPedAPlayer(victim) then
                     if victimDied then
-                        TriggerServerEvent('ev:updateKillerData', {tostring(GetPlayerServerId(NetworkGetEntityOwner(attacker))), tostring(GetPlayerServerId(NetworkGetEntityOwner(victim)))})
+                        local boneWasDamaged, damagedBone = GetPedLastDamageBone(victim)
+                        if not boneWasDamaged then
+                            damagedBone = -1
+                        end
+                        TriggerServerEvent('ev:updateKillerData', {tostring(GetPlayerServerId(NetworkGetEntityOwner(attacker))), tostring(GetPlayerServerId(NetworkGetEntityOwner(victim))), damagedBone})
                     end
                 end
             end
