@@ -3,5 +3,6 @@ CREATE TABLE `ev_leaderboard` (
     `discord`    VARCHAR(255) NOT NULL,
     `kills`     INTEGER(7) NOT NULL DEFAULT 0,
     `deaths`    INTEGER(7) NOT NULL DEFAULT 0,
+    `headshots`    INTEGER(7) NOT NULL DEFAULT 0,
     PRIMARY KEY (`license`)
 );

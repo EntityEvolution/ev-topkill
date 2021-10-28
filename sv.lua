@@ -104,18 +104,19 @@ RegisterNetEvent('ev:updateKillerData', function(data)
         if type(data) ~= "table" then
             return print('Sus')
         else
-            if type(data[1]) ~= "string" and type(data[2]) ~= "string" then
+            if type(data[1]) ~= "string" and type(data[2]) ~= "string" and type(data[3]) == "number" then
                 return print('sus')
             end
             local playerId = tonumber(data[1])
             local targetId = tonumber(data[2])
+            local headshot = tonumber(data[3]) == 150 and 1 or 0
             if playerId ~= targetId then
                 local playerData = playersData[playerId]
                 local targetData = playersData[targetId]
                 if playerData and targetData then
                     if playerData.license and targetData.license then
                         local queries = {
-                            { query = 'UPDATE `ev_leaderboard` SET kills = ?, deaths = ? WHERE license = ?', values = {playerData.kills + 1, playerData.deaths, playerData.license} },
+                            { query = 'UPDATE `ev_leaderboard` SET kills = ?, deaths = ?, headshots = ? WHERE license = ?', values = {playerData.kills + 1, playerData.deaths, playerData.headshot + headshot, playerData.license} },
                             { query = 'UPDATE `ev_leaderboard` SET kills = ?, deaths = ? WHERE license = ?', values = {targetData.kills, targetData.deaths + 1, targetData.license} }
                         }
                         exports.oxmysql:transaction(queries, function(result)
@@ -139,12 +140,12 @@ RegisterNetEvent('ev:playerSet', function()
             exports.oxmysql:single('SELECT * FROM ev_leaderboard WHERE license = ?', {license}, function(result)
                 if result then
                     print('restored')
-                    p:resolve({license = result.license, discord = result.discord, kills = tonumber(result.kills), deaths = tonumber(result.deaths)})
+                    p:resolve({license = result.license, discord = result.discord, kills = tonumber(result.kills), deaths = tonumber(result.deaths), headshots = tonumber(result.headshots)})
                 else
                     print('created new')
-                    exports.oxmysql:insert('INSERT INTO ev_leaderboard (license, discord, kills, deaths) VALUES (?, ?, ?, ?) ', {license, discord, '0', '0'}, function(id)
+                    exports.oxmysql:insert('INSERT INTO ev_leaderboard (license, discord, kills, deaths, headshots) VALUES (?, ?, ?, ?, ?) ', {license, discord, '0', '0', '0'}, function(id)
                         if id then
-                            p:resolve({license = license, discord = getDiscordName(discord), kills = 0, deaths = 0})
+                            p:resolve({license = license, discord = discord, kills = 0, deaths = 0, headshots = 0})
                         end
                     end)
                 end
