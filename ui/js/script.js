@@ -84,6 +84,7 @@ const updateScore = async data => {
     const kills = doc.getElementById('personal-kills');
     const deaths = doc.getElementById('personal-deaths');
     const kd = doc.getElementById('personal-kd');
+    const headshot = doc.getElementById('personal-headshot');
     (data.avatar) ? avatar.src = data.avatar : avatar.src = './default.png';
     (data.discord.length > maxNameLength) ? name.textContent = data.discord.slice(0, maxNameLength) : name.textContent = data.discord;
 
@@ -93,6 +94,7 @@ const updateScore = async data => {
     kills.textContent = data.kills;
     deaths.textContent = data.deaths;
     kd.textContent = data.kd;
+    headshot.textContent = data.headshots;
     return await new Promise(function(resolve, reject){
         resolve(true);
     })

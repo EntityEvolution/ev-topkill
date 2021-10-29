@@ -92,20 +92,24 @@
     background: linear-gradient(360deg, rgba(28,41,56,1) 0%, rgba(48,77,110,1) 100%);
     position: absolute;
     right: 0.5%;
-    bottom: 2%;
+    bottom: 35%;
     display: none;
     flex-direction: column;
     align-items: center;
     flex-wrap: nowrap;
     width: 30vh;
-    height: 20vh;
-    font-size: 1.5vh;
+    height: 28vh;
+    font-size: 2vh;
     color: #3ba3e4;
     font-family: --f;
     text-shadow: 0 0.3vh 0 black;
     text-align: center;
     border-radius: 0.8vw;
     box-shadow: 0 0 0.8vh rgba(0, 0, 0, 0.322);
+}
+
+#personal-name  {
+    font-size: 3.5vh;
 }
 
 .personal-img {
@@ -136,7 +140,7 @@
     flex-direction: row;
     color: white;
     text-align: left;
-    margin-top: 0.5vw;
+    margin: .8vh;
 }
 
 #discord-1 {
@@ -158,6 +162,10 @@
 }
 
 #personal-deaths {
+    margin-left: 0.5vh;
+}
+
+#personal-headshot {
     margin-left: 0.5vh;
 }
 
