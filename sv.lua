@@ -1,4 +1,4 @@
-local botToken <const> = "Nzc3MDU1MTA4MDEzNzUyMzIw.X6929g.ez4tHlVc-3bNk9ilCZaOMNqJHH4" -- Add your discord bot with admin perms token here.
+local botToken <const> = "YOUR_BOT_TOKEN" -- Add your discord bot with admin perms token here.
 
 local insert = table.insert
 local sort = table.sort
