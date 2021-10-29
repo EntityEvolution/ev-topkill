@@ -22,7 +22,7 @@ This project does not contain a license, therefore you are not allowed to add on
 - /score | Will display your score.
 
 ## Preview
-![Image](https://fishii.is-horny.wtf/acO5NHmNPe.png)
-![Image](https://fishii.is-horny.wtf/7yMHcROgYz.png)
+![Image](https://fishii.is-horny.wtf/oDF99F7Gzl.png)
+![Image](https://fishii.is-horny.wtf/8Rq7dl8oex.png)
 # Acknowledgment
 [Fishii](https://github.com/fishiidev) for creating most of the UI and helping with testing + Errors.
