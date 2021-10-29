@@ -10,23 +10,23 @@ window.addEventListener('load', () => {
             if (window.getComputedStyle(scoreboard, null).display == 'flex') {
                 return console.log('You need to close the other one first')
             };
-            if (e.data.first) {
-                updateData(e.data.first, '1');
+            if (e.data.players) {
+                updateData(e.data.players).then((response) => {
+                    if (response) {
+                        leaderboard.style.display = 'flex';
+                    }
+                    return;
+                });
             }
-            if (e.data.second) {
-                updateData(e.data.second, '2');
-            }
-
-            if (e.data.third) {
-                updateData(e.data.third, '3');
-            }
-            doc.getElementById('leaderboard').style.display = 'flex';
         } else if (e.data.action == 'showScore') {
             if (window.getComputedStyle(leaderboard, null).display == 'flex') {
                 return console.log('You need to close the other one first')
             };
-            scoreboard.style.display = 'flex';
-            updateScore(e.data.player);
+            updateScore(e.data.player).then((response) => {
+                if (response) {
+                    scoreboard.style.display = 'flex';
+                }
+            });
         } 
     })
 
@@ -42,47 +42,62 @@ window.addEventListener('load', () => {
     })
 })
 
-const updateData = (data, position) => {
-    // Discord avatar check
-    if (data.discord) {
-        doc.getElementById(`discord-${position}`).src = data.discord;
-    } else {
-        doc.getElementById(`discord-${position}`).src = './default.png';
+const updateData = async data => {
+    let count = 0;
+    const leaderboard = doc.getElementById('pub-leaderboard');
+    const allPlayers = doc.getElementsByClassName('lead-text');
+    for (let i = allPlayers.length - 1; i >= 0; i--) {
+        allPlayers[i].remove();
     }
+    data.forEach(dataItem => {
+        count += 1;
+        const playerInfo = doc.createElement('span');
+        playerInfo.classList.add('lead-text');
+        if (dataItem.kills.length > 7) {
+            return console.log('Max kill number cannot be over 7!')
+        }
+        if (count <= 3) {
+            if (count === 1) {
+                playerInfo.style.color = 'gold';
+            } else if (count == 2) {
+                playerInfo.style.color = 'silver';
+            } else {
+                playerInfo.style.color = '#cd7f32';
+            }
+            // Discord avatar check
+            (dataItem.discord) ? doc.getElementById(`discord-${count}`).src = dataItem.discord : doc.getElementById(`discord-${count}`).src = './default.png';
 
-    // Discord kills check
-    if (data.kills.length > 7) {
-        return console.log('Max kill number cannot be over 7!')
-    }
-    doc.getElementById(`kills-${position}`).textContent = data.kills;
-
-    // Name length check
-    if (data.name.length > maxNameLength) {
-        doc.getElementById(`name-${position}`).textContent = `${position} - ${(data.name).slice(0, maxNameLength - 2) + '...'} - ${data.kills} kills`;
-    } else {
-        doc.getElementById(`name-${position}`).textContent = `${position} - ${data.name} - ${data.kills} kills`;
-    }
+            // Set kills
+            doc.getElementById(`kills-${count}`).textContent = dataItem.kills;
+        }
+        (dataItem.name.length > maxNameLength) ? playerInfo.textContent = `${count} - ${(dataItem.name).slice(0, maxNameLength - 2) + '...'} - ${dataItem.kills} kills` : playerInfo.textContent = `${count} - ${dataItem.name} - ${dataItem.kills} kills` ;
+        leaderboard.appendChild(playerInfo);
+    })
+    return await new Promise(function(resolve, reject){
+        resolve(true);
+    })
 }
 
-const updateScore = data => {
-    if (data.avatar) {
-        doc.getElementById('personal-avatar').src = data.avatar;
-    } else {
-        doc.getElementById('personal-avatar').src = './default.png';
-    }
-
-    if (data.discord.length > maxNameLength) {
-        doc.getElementById('personal-name').textContent = data.discord.slice(0, maxNameLength)
-    } else {
-        doc.getElementById('personal-name').textContent = data.discord;
-    }
+const updateScore = async data => {
+    const avatar = doc.getElementById('personal-avatar');
+    const name = doc.getElementById('personal-name');
+    const kills = doc.getElementById('personal-kills');
+    const deaths = doc.getElementById('personal-deaths');
+    const kd = doc.getElementById('personal-kd');
+    const headshot = doc.getElementById('personal-headshot');
+    (data.avatar) ? avatar.src = data.avatar : avatar.src = './default.png';
+    (data.discord.length > maxNameLength) ? name.textContent = data.discord.slice(0, maxNameLength) : name.textContent = data.discord;
 
     if (data.kills.length > 7 || data.deaths.length > 7 || data.kd.length > 7) {
-        return console.log('Max kill number cannot be over 7!')
+        return console.log('Max data number cannot be over 7!')
     }
-    doc.getElementById('personal-kills').textContent = data.kills;
-    doc.getElementById('personal-deaths').textContent = data.deaths;
-    doc.getElementById('personal-kd').textContent = data.kd;
+    kills.textContent = data.kills;
+    deaths.textContent = data.deaths;
+    kd.textContent = data.kd;
+    headshot.textContent = data.headshots;
+    return await new Promise(function(resolve, reject){
+        resolve(true);
+    })
 }
 
 const fetchNUI = async (cbname, data) => {
