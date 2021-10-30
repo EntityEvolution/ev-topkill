@@ -26,3 +26,4 @@ This project does not contain a license, therefore you are not allowed to add on
 ![Image](https://fishii.is-horny.wtf/8Rq7dl8oex.png)
 # Acknowledgment
 [Fishii](https://github.com/fishiidev) for creating most of the UI and helping with testing + Errors.
+[GameEvent](https://github.com/negbook/GameEventTriggered) by Negbook
