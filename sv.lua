@@ -7,7 +7,6 @@ local playersData = {}
 local TOKEN <const> = "Bot "  .. botToken --Concatenated token
 local DEFAULT_ID <const> = '903150326155182151' -- Just in case the player doesn't have discord open
 
-
 --#region Functions
 ---Gets the discord id and cuts it
 ---@param playerId number
@@ -134,7 +133,6 @@ RegisterNetEvent('ev:playerSet', function()
     end
 end)
 
-
 RegisterNetEvent('ev:updateKillerData', function(data)
     if data then
         if type(data) ~= "table" then
@@ -172,7 +170,6 @@ RegisterCommand('score', function(source)
         TriggerClientEvent('ev:showLeaderboard', playerId, false, {avatar = playerData.avatar, discord = playerData.name, kills = playerData.kills, deaths = playerData.deaths, kd = kd, headshots = playerData.headshots})
     end
 end)
-
 
 RegisterCommand('showLeaderboard', function(source)
     local playerId <const> = source
