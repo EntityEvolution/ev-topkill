@@ -182,3 +182,21 @@ RegisterCommand('showLeaderboard', function(source)
     end)
     TriggerClientEvent('ev:showLeaderboard', playerId, true, data)
 end)
+
+RegisterCommand('updateavatar', function(source, args)
+    local targetSource = tonumber(args[1])
+    local targetLicense = getLicense(targetSource)
+    local playerData = playersData[targetLicense]
+    if not playerData then
+        return print('Player not found')
+    end
+
+    local discordId = getDiscordId(targetSource)
+    local discordAvatar = getPlayerFromDiscord(discordId)
+    if not discordAvatar then
+        return print('Avatar not found')
+    end
+
+    playerData.avatar = discordAvatar
+    exports.oxmysql:updateSync('UPDATE ev_leaderboard SET avatar = ? WHERE license = ? ', {discordAvatar, targetLicense})
+end, true)
